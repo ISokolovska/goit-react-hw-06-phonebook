@@ -18,5 +18,5 @@ export const Filter = ({ setFilter, filter }) => {
 
 Filter.propTypes = {
   setFilter: PropTypes.func,
-  filterContacts: PropTypes.string,
+  filter: PropTypes.string,
 };

@@ -1,32 +1,38 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-// import { taskReducer } from './reducer';
+import { configureStore } from '@reduxjs/toolkit';
+import { contactsReducer } from './contactsSlice/contactsSlice';
 
-const contactsData = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-const initialState = {
-  contacts: JSON.parse(localStorage.getItem('contacts')) ?? contactsData,
-  filter: '',
+const phonebookPersistConfig = {
+  key: 'item',
+  storage: storage,
+  whitelist: ['contacts'],
 };
 
-export const contactsSlice = createSlice({
-  // Имя слайса
-  name: 'contacts',
-  // Начальное состояние редюсера слайса
-  initialState: initialState,
-  // Объект редюсеров (ф-ииб котю обрабатывают екшн)
-  reducers: {
-    addContact(state, action) {},
-    deleteContact(state, action) {},
-  },
+const phonebookPersistReducer = persistReducer(
+  phonebookPersistConfig,
+  contactsReducer
+);
+
+const store = configureStore({
+  reducer: { contactsData: phonebookPersistReducer },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
-export const { addContact, deleteContact } = contactsSlice.actions;
-const contactsReducer = contactsSlice.reducer;
-export const store = configureStore({
-  reducer: { contactsData: contactsReducer },
-});
+export const persistor = persistStore(store);
+export default store;

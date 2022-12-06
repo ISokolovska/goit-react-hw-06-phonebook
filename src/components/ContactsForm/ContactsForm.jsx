@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { addContact } from '../../redux/contactsSlice/contactsSlice';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { AddContactsFormContainer, AddContactsInput, Button } from './Styled';
-import { useState } from 'react';
 
-export const ContactsForm = ({ addContact }) => {
+export const ContactsForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = evt => {
     if (evt.target.name === 'name') {
@@ -24,7 +26,7 @@ export const ContactsForm = ({ addContact }) => {
       number,
       id: nanoid(),
     };
-    addContact(contact);
+    dispatch(addContact(contact));
     reset();
   };
 

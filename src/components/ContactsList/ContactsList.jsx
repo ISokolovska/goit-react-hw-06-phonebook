@@ -1,23 +1,23 @@
 import PropTypes from 'prop-types';
 import { Button } from '../ContactsForm/Styled';
-import { Contact } from './Styled';
+import { Contact, ContactsWrapper } from './Styled';
 
-export const ContactsList = ({ contacts, deleteContact }) => {
+export const ContactsList = ({ contacts, onDeleteContact }) => {
   return (
-    <ul className="contacts-list">
+    <ContactsWrapper className="contacts-list">
       {contacts.map(contact => {
         return (
           <li key={contact.id}>
             <Contact>
               {contact.name}: {contact.number}
             </Contact>
-            <Button type="submit" onClick={() => deleteContact(contact.id)}>
+            <Button type="submit" onClick={() => onDeleteContact(contact.id)}>
               Delete
             </Button>
           </li>
         );
       })}
-    </ul>
+    </ContactsWrapper>
   );
 };
 
@@ -26,7 +26,8 @@ ContactsList.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
     })
   ),
-  deleteContact: PropTypes.func,
+  onDeleteContact: PropTypes.func,
 };
