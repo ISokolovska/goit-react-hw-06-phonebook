@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from '../redux/contactsSlice/contactsSlice';
+import { deleteContact, setFilter } from '../redux/contactsSlice/contactsSlice';
 import { ContactsForm } from './ContactsForm/ContactsForm';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 
 export const App = () => {
-  const [filter, setFilter] = useState('');
   const contacts = useSelector(state => state.contactsData.contacts);
+  const filter = useSelector(state => state.contactsData.filter);
   const dispatch = useDispatch();
 
   const onDeleteContact = id => {
@@ -16,7 +16,7 @@ export const App = () => {
 
   const setFilterContacts = event => {
     const { value } = event.target;
-    setFilter(value);
+    dispatch(setFilter(value));
   };
 
   const filterContacts = () => {
